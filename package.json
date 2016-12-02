@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "linchpin": "^1.0.2",
     "minesweeper": "^1.0.5",
     "ramda": "^0.22.1",
     "react": "^15.4.1",

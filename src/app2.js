@@ -1,34 +1,35 @@
 const React = require('react')
-const minesweeper = require('minesweeper')
 const {map, addIndex} = require('ramda')
-
 const mapIndex = addIndex(map)
-const closedCss = {
-    border: '4px',
-    borderStyle: 'solid',
-    backgroundColor: 'DimGray',
-    borderLeftColor: 'white',
-    borderTopColor: 'white',
-    borderRightColor: 'black',
-    borderBottomColor: 'black',
-    height: '40px',
-    minWidth: '40px'
-}
+const minesweeper = require('minesweeper')
+
 const openCss = {
+    backgroundColor: 'Red',
+    borderTopColor: 'white',
+    borderLeftColor: 'white',
+    borderBottomColor: 'black',
+    borderRightColor: 'black',
     border: '4px',
     borderStyle: 'solid',
-    backgroundColor: 'DimGray',
-    borderLeftColor: 'black',
-    borderTopColor: 'black',
-    borderRightColor: 'white',
-    borderBottomColor: 'white',
-    height: '40px',
-    minWidth: '40px'
+    height: '50px',
+    width: '50px'
 }
 
-module.exports = React.createClass({
+const closedCss = {
+    backgroundColor: 'DimGray',
+    borderTopColor: 'black',
+    borderLeftColor: 'black',
+    borderBottomColor: 'white',
+    borderRightColor: 'white',
+    border: '2px',
+    borderStyle: 'solid',
+    height: '50px',
+    width: '50px'
+}
+
+const App = React.createClass({
     getInitialState() {
-        return {grid: [], state: 0, board: null}
+        return {state: 0, grid: [], board: null}
     },
     openCell(x, y) {
         return (e) => {
@@ -51,16 +52,20 @@ module.exports = React.createClass({
                     return {
                         css: openCss,
                         text: (cell.state === 1 && cell.isMine)
-                            ? '💩'
-                            : null
+                            ? '🔥'
+                            : (cell.numAdjacentMines > 0
+                                ? cell.numAdjacentMines
+                                : null)
                     }
                 }
             } else {
                 return {
                     css: openCss,
                     text: cell.isMine
-                        ? '💩'
-                        : null
+                        ? '🔥'
+                        : (cell.numAdjacentMines > 0
+                            ? cell.numAdjacentMines
+                            : null)
                 }
             }
         }
@@ -77,9 +82,9 @@ module.exports = React.createClass({
         const tr = (row, i) => <tr key={i}>{mapIndex(td, row)}</tr>
         return (
             <div>
-                <h1>MineSweeper</h1>
-                <div>{this.state.state}</div>
-                <table>
+                <h1 className="tc">MineSweeper</h1>
+                <div className="tc">{this.state.state}</div>
+                <table className="center">
                     <tbody>
                         {mapIndex(tr, this.state.grid)}
                     </tbody>
@@ -88,3 +93,5 @@ module.exports = React.createClass({
         )
     }
 })
+
+module.exports = App
